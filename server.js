@@ -106,15 +106,87 @@ app.get('/datasets/:id/glossary', function (req, res) {
   }))
 
 
+  if (req.query.search) {
+    return res.send({
+      result: [
+        {
+          "file": "Sample_File_Name_1",
+          "file_set_type": req.query.file_set_type || 'raw_data',
+          "fields": [
+              {
+                  "field": `${req.query.search}`,
+                  "data_type": "float",
+                  "description": "Quis autem vel eum iure Excepteur sint occaecat cupidatat Excepteur sint occaecat cupidatat Excepteur sint occaecat cupidatat Excepteur sint occaecat cupidatat Excepteur sint occaecat cupidatat"
+              },
+          ],
+        },
+        {
+          "file": "Sample_File_Name_2",
+          "file_set_type": req.query.file_set_type || 'raw_data',
+          "fields": [
+              {
+                  "field": `${req.query.search}`,
+                  "data_type": "float",
+                  "description": "Quis autem vel eum iure Excepteur sint occaecat cupidatat Excepteur sint occaecat cupidatat Excepteur sint occaecat cupidatat Excepteur sint occaecat cupidatat Excepteur sint occaecat cupidatat"
+              },
+          ],
+        }
+
+      ],
+      _metadata: {
+        page: Number(req.query.page),
+        total_count: 8,
+        current_page: Number(req.query.page),
+        page_size: Number(req.query.page_size)
+      }
+    })
+  }
+
   res.send({
     result: mockGlossary,
     _metadata: {
-      total_count: 2,
-      current_page: 1,
-      page_size: 15
+      page: Number(req.query.page),
+      total_count: 8,
+      current_page: Number(req.query.page),
+      page_size: Number(req.query.page_size)
     }
   })
 })
 
+
+app.get('/datasets/:id/versions', function (req, res) {
+  res.send(
+    {
+      "result": [
+          "1.0",
+          "2.0",
+          "2.1",
+          "3.0a",
+          "3.0b"
+      ]
+    }
+  )
+})
+
+app.get('/lookup/file-set-types', function (req, res) {
+  res.send(
+    {
+      "result": [
+        {
+          "name": "Raw Data",
+          "value": "raw_data"
+        },
+        {
+          "name": "ID Map",
+          "value": "id_map"
+        },
+        {
+          "name": "Formatted Data",
+          "value": "formatted_data"
+        }
+      ]
+    }
+  )
+})
 
 app.listen(process.env.PORT || port);
