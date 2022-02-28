@@ -153,6 +153,51 @@ app.get('/datasets/:id/glossary', function (req, res) {
   })
 })
 
+app.get('/datasets/:id/glossary/files', function (req, res) {
+  const mockGlossary = glossary.map(val => ({
+    file: `${req.query.file_set_type}${val.file}`,
+    file_set_type: req.query.file_set_type || 'raw_data',
+  }))
+
+
+  if (req.query.search) {
+    return res.send({
+      result: [
+        {
+          "file": "Sample_File_Name_1",
+          "file_set_type": req.query.file_set_type || 'raw_data'
+        },
+        {
+          "file": "Sample_File_Name_2",
+          "file_set_type": req.query.file_set_type || 'raw_data'
+        }
+
+      ]
+    })
+  }
+
+  res.send({
+    result: mockGlossary
+  })
+})
+
+app.get('/datasets/:id/glossary/fields', function (req, res) {
+  const mockGlossary = glossary.map(val => ({
+    field: val.field,
+    data_type: val.data_type,
+    description: val.description
+  }))
+
+  res.send({
+    result: mockGlossary,
+    _metadata: {
+      page: Number(req.query.page),
+      total_count: 8,
+      current_page: Number(req.query.page),
+      page_size: Number(req.query.page_size)
+    }
+  })
+})
 
 app.get('/datasets/:id/versions', function (req, res) {
   res.send(
